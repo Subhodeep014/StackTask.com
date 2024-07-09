@@ -87,7 +87,7 @@ export default function Navbar() {
               <DropdownMenuContent align="end" className="shadcn-sheet-content">
                 <DropdownMenuLabel>{currentUser.fullname}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Your Todos</DropdownMenuItem>
+                <DropdownMenuItem><Link to ='/todo'>Your Todos</Link></DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick = {handleSignout}>Logout</DropdownMenuItem>
               </DropdownMenuContent>

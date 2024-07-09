@@ -33,7 +33,7 @@ export default function Signin() {
             });
             const data = await res.data;
             console.log(data)
-            if(res.status === 200){
+            if(!res.status === 200){
                 dispatch(signInFailure(data.message));
                 toast.error(`Wrong email or password`)
             }
