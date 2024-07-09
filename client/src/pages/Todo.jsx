@@ -45,21 +45,48 @@ export default function Todo() {
     const {currentUser} = useSelector((state)=> state.user)
     const [userTodo, setUserTodo] = useState([]);
     const [todoIdToDelete, setTodoIdToDelete] = useState('');
+    const [showMore, setShowMore] = useState(true);
 
     useEffect(()=>{
         const fetchTodos = async()=>{
             try {
-                const res = await axios.get(`/api/todo/get`)
+                const res = await axios.get(`/api/todo/get/`,{
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                console.log(res)
                 const data = await res.data;
-                console.log(data)
-                if(data.success===true){
-                    setUserTodo(data.name)
+                
+                if(data){
+                    setUserTodo(data)
+                    console.log(userTodo)
+                    if(res.data.length<9){
+                        setShowMore(false)
+                    }
                 }
+                
             } catch (error) {
-
+                console.log(error.message)
             }
         }
-    })
+        fetchTodos();
+        console.log(userTodo)
+        
+    },[currentUser._id])
+    const handleShowMore = async()=>{
+        const startIndex = userTodo.length;
+        try {
+            const res = await axios.get(`/api/todo/get?startIndex=${startIndex}`);
+            const data = await res.json();
+            if(res.ok){
+                setUserPosts((prev)=>[...prev, ...data.posts]);
+                if(data.posts.length<9){
+                    setShowMore(false);
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        } 
+    }
   return (
     <div>
         <main className="gap-4 p-4 ">

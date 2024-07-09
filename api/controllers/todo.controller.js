@@ -26,9 +26,12 @@ export const addTodo = async(req, res, next)=>{
 } 
 export const getTodos = async (req, res, next) => {
     try {
+        const startIndex = parseInt(req.query.startIndex) || 0;
+        const limit = parseInt(req.query.limit) || 9;
         const { searchTerm, order } = req.query;
+
         const searchOptions = {
-            userId: req.user.id
+            userId: req.user.id,
         };
 
         if (searchTerm) {
@@ -37,7 +40,8 @@ export const getTodos = async (req, res, next) => {
 
         const sortOptions = order === 'asc' ? { createdAt: 1 } : { createdAt: -1 };
 
-        const todos = await Todo.find(searchOptions).sort(sortOptions);
+        const todos = await Todo.find(searchOptions).sort(sortOptions).skip(startIndex).limit(limit);
+
         res.status(200).json(todos);
     } catch (error) {
         next(error);
