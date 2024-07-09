@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import {
     ListFilter,
@@ -41,12 +41,14 @@ import {
 import TableRowTodo from '@/components/TableRowTodo'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 export default function Todo() {
+    const todoRef = useRef();
     const {currentUser} = useSelector((state)=> state.user)
     const [userTodo, setUserTodo] = useState([]);
     const [todoIdToDelete, setTodoIdToDelete] = useState('');
     const [showMore, setShowMore] = useState(true);
-
+    const [addTodo, setAddTodo] = useState({});
     useEffect(()=>{
         const fetchTodos = async()=>{
             try {
@@ -87,17 +89,42 @@ export default function Todo() {
             console.log(error);
         } 
     }
+    const handleChange = async(e)=>{
+        setAddTodo({[e.target.id]: e.target.value})
+
+    }
+    const handleClick = async()=>{
+        if (todoRef.current) todoRef.current.value = '';
+        todoRef.current.focus()
+        console.log("hejkgd")
+        try {
+            const res = await axios.post('/api/todo/create', addTodo ,{
+                headers: { 'Content-Type': 'application/json' }
+            })
+            const data = await res.data;
+            console.log(data)
+            if(res.status === 200){
+                toast.success("Task added into you list!")
+                setUserTodo([...userTodo, data])
+            }
+        } catch (error) {
+            toast.error("Something went wrong")
+        }
+    }
   return (
     <div>
         <main className="gap-4 p-4 ">
             <div className="flex items-center mt-5 gap-2">
                 {/* <Search className="left-96 h-4 w-4 text-muted-foreground" /> */}
                 <Input
+                id='name'
+                onChange = {handleChange}
+                ref={todoRef}
                 type="text"
                 placeholder="Add your task..."
                 className="w-full rounded-lg bg-background pl-8 md:w-[336px]"
                 />
-                <Button>Add</Button>
+                <Button onClick = {handleClick}>Add</Button>
             </div>
             <div className="mt-5">
                 <Search className="relative top-7 left-2 h-4 w-4 text-muted-foreground" />
@@ -156,13 +183,9 @@ export default function Todo() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                        <TableRowTodo/>
-                        <TableRowTodo/>
-                        <TableRowTodo/>
-                        <TableRowTodo/>
-                        <TableRowTodo/>
-                        <TableRowTodo/>
-                        
+                        {userTodo.length>0  && userTodo.map(todo=>(
+                            <TableRowTodo key={todo._id} task={todo}/>
+                        ))}                        
                     </TableBody>
                   </Table>
                 </CardContent>

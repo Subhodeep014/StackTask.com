@@ -29,6 +29,26 @@ export default function TableRowTodo({task}) {
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
+  const formatDate = (timestamp) => {
+    const date = new Date(timestamp);
+    
+    // Format the date
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2); 
+    const day = ('0' + date.getDate()).slice(-2);
+    
+    // Format the time
+    let hours = date.getHours();
+    const minutes = ('0' + date.getMinutes()).slice(-2);
+    const period = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12; 
+    hours = ('0' + hours).slice(-2);
+    
+    // Construct the formatted date string
+    const formattedDate = `${year}-${month}-${day} ${hours}:${minutes} ${period}`;
+    
+    return formattedDate;
+  };
   return (
 
     <TableRow className="p-0 m-0  bg-gray-100 dark:bg-slate-900">
@@ -36,10 +56,10 @@ export default function TableRowTodo({task}) {
         <Checkbox checked={isChecked} onClick ={handleCheckboxChange} />
       </TableCell>
       <TableCell className={`min-w-60 p-0 m-0 font-medium ${isChecked ? 'line-through text-gray-500 dark:text-gray-400' : ''}`}>
-        Cycling with Amanda at 5pm
+        {task.name}
       </TableCell>
       <TableCell className="p-0 m-0 text-[11px] lg:text-[14px]">
-      2023-07-12 10:42 AM
+      {formatDate(task.createdAt)}
       </TableCell>
       <TableCell className="p-0 m-0">
         <DropdownMenu>

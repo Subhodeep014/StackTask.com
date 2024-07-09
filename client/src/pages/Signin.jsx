@@ -20,9 +20,9 @@ export default function Signin() {
     }
     const handleSubmit = async(e)=>{
         e.preventDefault();
-        // if (emailRef.current) emailRef.current.value = '';
-        // if (passwordRef.current) passwordRef.current.value = '';
-        // emailRef.current.focus()
+        if (emailRef.current) emailRef.current.value = '';
+        if (passwordRef.current) passwordRef.current.value = '';
+        emailRef.current.focus()
         if(!formData.email){
             return dispatch(signInFailure('Please fill out all feilds'))
         }
@@ -33,7 +33,7 @@ export default function Signin() {
             });
             const data = await res.data;
             console.log(data)
-            if(data.success === false){
+            if(res.status === 200){
                 dispatch(signInFailure(data.message));
                 toast.error(`Wrong email or password`)
             }
