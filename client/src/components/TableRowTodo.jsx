@@ -31,7 +31,7 @@ export default function TableRowTodo({task}) {
   };
   return (
 
-    <TableRow className="p-0 m-0  bg-gray-100">
+    <TableRow className="p-0 m-0  bg-gray-100 dark:bg-slate-900">
       <TableCell className="sm:table-cell">
         <Checkbox checked={isChecked} onClick ={handleCheckboxChange} />
       </TableCell>

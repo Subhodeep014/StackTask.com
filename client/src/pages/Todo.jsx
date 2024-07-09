@@ -1,5 +1,5 @@
-import React from 'react'
-import { Checkbox } from "@/components/ui/checkbox"
+import React, { useEffect, useState } from 'react'
+
 import {
     ListFilter,
     Search,
@@ -39,12 +39,32 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 import TableRowTodo from '@/components/TableRowTodo'
+import { useSelector } from 'react-redux'
+import axios from 'axios'
 export default function Todo() {
+    const {currentUser} = useSelector((state)=> state.user)
+    const [userTodo, setUserTodo] = useState([]);
+    const [todoIdToDelete, setTodoIdToDelete] = useState('');
+
+    useEffect(()=>{
+        const fetchTodos = async()=>{
+            try {
+                const res = await axios.get(`/api/todo/get`)
+                const data = await res.data;
+                console.log(data)
+                if(data.success===true){
+                    setUserTodo(data.name)
+                }
+            } catch (error) {
+
+            }
+        }
+    })
   return (
     <div>
         <main className="gap-4 p-4 ">
             <div className="flex items-center mt-5 gap-2">
-                {/* <Search className="left-96  h-4 w-4 text-muted-foreground" /> */}
+                {/* <Search className="left-96 h-4 w-4 text-muted-foreground" /> */}
                 <Input
                 type="text"
                 placeholder="Add your task..."
@@ -98,7 +118,7 @@ export default function Todo() {
                 </CardHeader>
                 <CardContent>
                   <Table>
-                    <TableHeader>
+                    <TableHeader className="bg-slate-200 dark:bg-sky-950">
                       <TableRow className = "p-0 m-0" >
                         <TableHead className="p-3 m-0">Task</TableHead>
                         <TableHead className="p-0 m-0">Name</TableHead>
