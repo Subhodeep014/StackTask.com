@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 export default function Home() {
   const { theme } = useSelector((state) => state.theme);
+  const { currentUser } = useSelector((state) => state.user);
   const handleClick = ()=>{
     console.log("hello")
   }
@@ -29,7 +30,11 @@ export default function Home() {
             </span>
           </div>
           <div className="">
-            <Button className="bg-green-800 dark:bg-green-800 text-white dark:text-white dark:hover:bg-teal-900" ><Link to='/sign-in'>Sign in to get started</Link></Button>
+          <Button className="bg-green-800 dark:bg-green-800 text-white dark:text-white dark:hover:bg-teal-900">
+            <Link to={currentUser ? '/todo' : '/sign-in'}>
+                {currentUser ? 'Get Started' : 'Sign in to get started'}
+            </Link>
+        </Button>
           </div>
         </div>
 

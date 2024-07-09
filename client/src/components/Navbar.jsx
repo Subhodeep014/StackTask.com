@@ -36,10 +36,10 @@ export default function Navbar() {
       const data = res.data;
   
       if (!res.status === 200) {
-        toast.success("Signed out succesfully")
+        toast.error("Error while signing out")
         console.log(data.message);
       } else {
-        toast.error("Error while signing out")
+        toast.success("Signed out succesfully")
         dispatch(signoutSuccess());
       }
     } catch (error) {
@@ -87,8 +87,7 @@ export default function Navbar() {
               <DropdownMenuContent align="end" className="shadcn-sheet-content">
                 <DropdownMenuLabel>{currentUser.fullname}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Dashboard</DropdownMenuItem>
+                <DropdownMenuItem>Your Todos</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick = {handleSignout}>Logout</DropdownMenuItem>
               </DropdownMenuContent>

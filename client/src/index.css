@@ -3,4 +3,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.dark.shadcn-sheet-content {
+    background-color: #1f2937; 
+    border: #1f2937;
+    color: #ffffff; 
+    
+}
+  
+.light.shadcn-sheet-content {
+    background-color: #ffffff; 
+    color: #000000;
+}
   
