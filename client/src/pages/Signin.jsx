@@ -41,7 +41,7 @@ export default function Signin() {
                 dispatch(signInSuccess(data));
                 console.log(data);
                 toast.success(`Welcome ${data.fullname}!`)
-                navigate('/')
+                navigate('/todo')
             }
         } catch (error) {
             dispatch(signInFailure(error.message));   

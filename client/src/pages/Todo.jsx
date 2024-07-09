@@ -48,13 +48,13 @@ import TableRowTodo from '@/components/TableRowTodo'
 export default function Todo() {
   return (
     <div>
-        <main className="flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-            <div className="relative mx-auto flex-1 md:grow-0 mt-5">
+        <main className="gap-4 p-4 ">
+            <div className="flex justify-center items-center mt-5">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
                 type="search"
                 placeholder="Add your task..."
-                className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
+                className="w-full rounded-lg bg-background pl-8 md:w-[336px]"
                 />
             </div>
           <Tabs defaultValue="all">
@@ -83,12 +83,6 @@ export default function Todo() {
                     <DropdownMenuCheckboxItem>Oldest first</DropdownMenuCheckboxItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-                <Button size="sm" className="h-8 gap-1">
-                  <PlusCircle className="h-3.5 w-3.5" />
-                  <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                    Add Todos
-                  </span>
-                </Button>
               </div>
             </div>
             <TabsContent value="all">
