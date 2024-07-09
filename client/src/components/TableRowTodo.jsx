@@ -23,23 +23,25 @@ import {
     TableRow,
   } from "@/components/ui/table"
 export default function TableRowTodo({task}) {
-  // task?.completed for use Sttate when data get
+  
   const [isChecked, setIsChecked] = useState(false);
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
-    // Update the state in the parent component or make an API call here if needed
   };
   return (
 
-    <TableRow>
+    <TableRow className="p-0 m-0  bg-gray-100">
       <TableCell className="sm:table-cell">
         <Checkbox checked={isChecked} onClick ={handleCheckboxChange} />
       </TableCell>
-      <TableCell className={`font-medium min-w-64 p-0 ${isChecked ? 'line-through text-gray-500 dark:text-gray-400' : ''}`}>
+      <TableCell className={`min-w-60 p-0 m-0 font-medium ${isChecked ? 'line-through text-gray-500 dark:text-gray-400' : ''}`}>
         Cycling with Amanda at 5pm
       </TableCell>
-      <TableCell>
+      <TableCell className="p-0 m-0 text-[11px] lg:text-[14px]">
+      2023-07-12 10:42 AM
+      </TableCell>
+      <TableCell className="p-0 m-0">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button

@@ -1,14 +1,8 @@
 import React from 'react'
-import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
-    File,
-
     ListFilter,
-    MoreHorizontal,
     Search,
-    PlusCircle,
-
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -49,12 +43,21 @@ export default function Todo() {
   return (
     <div>
         <main className="gap-4 p-4 ">
-            <div className="flex justify-center items-center mt-5">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <div className="flex items-center mt-5 gap-2">
+                {/* <Search className="left-96  h-4 w-4 text-muted-foreground" /> */}
                 <Input
-                type="search"
+                type="text"
                 placeholder="Add your task..."
                 className="w-full rounded-lg bg-background pl-8 md:w-[336px]"
+                />
+                <Button>Add</Button>
+            </div>
+            <div className="mt-5">
+                <Search className="relative top-7 left-2 h-4 w-4 text-muted-foreground" />
+                <Input
+                type="search"
+                placeholder="Search..."
+                className="w-[200px] rounded-lg bg-background pl-8"
                 />
             </div>
           <Tabs defaultValue="all">
@@ -97,16 +100,22 @@ export default function Todo() {
                   <Table>
                     <TableHeader>
                       <TableRow className = "p-0 m-0" >
-                        <TableHead className="">Task</TableHead>
-                        <TableHead>Name</TableHead>
-                        <TableHead>
+                        <TableHead className="p-3 m-0">Task</TableHead>
+                        <TableHead className="p-0 m-0">Name</TableHead>
+                        <TableHead className="p-0 m-0">Created At</TableHead>
+                        <TableHead className="p-0 m-0">
                           <span className="sr-only">Actions</span>
                         </TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                        <TableRowTodo>
-                        </TableRowTodo>
+                        <TableRowTodo/>
+                        <TableRowTodo/>
+                        <TableRowTodo/>
+                        <TableRowTodo/>
+                        <TableRowTodo/>
+                        <TableRowTodo/>
+                        
                     </TableBody>
                   </Table>
                 </CardContent>

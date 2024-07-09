@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import axios from 'axios'
 export default function Signup() {
   const [formData, setFormData] = useState({});
   const [errorMessage, setErrorMessage] = useState(null);
@@ -23,29 +24,27 @@ export default function Signup() {
   }
   const handleSubmit = async(e)=>{
     e.preventDefault();
-    if(!formData.username || !formData.email || !formData.fullname){
+    if(!formData.email || !formData.fullname || !formData.password==="" || !formData.email==="" || !formData.fullname==="" || !formData.password==="" ){
       toast.error('Please fill out all feilds');
       return setErrorMessage('Please fill out all feilds');
     }
     try {
       setLoading(true);
       setErrorMessage(null);
-      const res = await fetch('/api/auth/signup',{
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(formData),
+      const res = await axios.post('/api/auth/signup',formData,{
+        headers: {'Content-Type': 'application/json'}
       })
-      const data= await res.json();
+      const data= await res.data;
       console.log(data)
       if(data.success===false){
         toast.error(data.message);
         setErrorMessage(data.message);
       }
-      setLoading(false);
-      if(res.ok){
+      else{
         toast.success("Succesfully signed up");
         navigate('/sign-in');
       }
+      setLoading(false);
     } catch (error) {
       toast.error(error.messgage);
       setLoading(false);
@@ -89,9 +88,6 @@ export default function Signup() {
                         </>
                       ) : 'Create an account'
                     }
-                  </Button>
-                  <Button disabled={loading} type='button' variant="outline" className="w-full">
-                    Sign up with Google
                   </Button>
               </div>
             </form>
