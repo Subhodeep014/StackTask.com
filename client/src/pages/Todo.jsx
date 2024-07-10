@@ -49,6 +49,8 @@ export default function Todo() {
     const [todoIdToDelete, setTodoIdToDelete] = useState('');
     const [showMore, setShowMore] = useState(true);
     const [addTodo, setAddTodo] = useState({});
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filterOrderAsc, setFilterOrderAsc] = useState(true)
     useEffect(()=>{
         const fetchTodos = async()=>{
             try {
@@ -112,6 +114,58 @@ export default function Todo() {
             toast.error("Something went wrong")
         }
     }
+  const handleSearch = async()=>{
+    const startIndex = userTodo.length;
+    if(searchTerm!==''){
+      try {
+        const res = await axios.get(`/api/todo/get?startIndex=${0}&searchTerm=${searchTerm}`);
+        const data = await res.data;
+        if(res.status === 200){
+          // const newDataArray = Object.keys(data).map(key => data[key]);
+          setUserTodo(data);
+          if(data.length<9){
+              setShowMore(false);
+          }
+        }
+    } catch (error) {
+        console.log(error);
+    } 
+    }
+  }
+  const searchDesc = async()=>{
+    try {
+      setFilterOrderAsc(false);
+      const res = await axios.get(`/api/todo/get?order=asc`);
+      const data = await res.data;
+      console.log(data)
+      if(res.status === 200){
+        // const newDataArray = Object.keys(data).map(key => data[key]);
+        setUserTodo(data);
+        if(data.length<9){
+            setShowMore(false);
+        }
+      }
+  } catch (error) {
+      console.log(error);
+  } 
+  }
+  const searchAsc = async()=>{
+    try {
+      setFilterOrderAsc(true);
+      const res = await axios.get(`/api/todo/get?order=desc`);
+      const data = await res.data;
+      console.log(data)
+      if(res.status === 200){
+        // const newDataArray = Object.keys(data).map(key => data[key]);
+        setUserTodo(data);
+        if(data.length<9){
+            setShowMore(false);
+        }
+      }
+  } catch (error) {
+      console.log(error);
+  } 
+  }
   return (
     <div>
         <main className="gap-4 p-4 ">
@@ -127,14 +181,17 @@ export default function Todo() {
                 />
                 <Button onClick = {handleClick}>Add</Button>
             </div>
-            <div className="mt-5">
-                <Search className="relative top-7 left-2 h-4 w-4 text-muted-foreground" />
+            <div className="mt-5 flex items-center">
+                <Search className="relative top-0 left-6 h-4 w-4 text-muted-foreground" />
                 <Input
                 id="search"
+                value = {searchTerm}
+                onChange = {(e)=>setSearchTerm(e.target.value)}
                 type="search"
                 placeholder="Search..."
                 className="w-[200px] rounded-lg bg-background pl-8"
                 />
+                <Button className = "ml-2 w-16 h-8" onClick = {handleSearch}>Search</Button>
             </div>
           <Tabs defaultValue="all">
             <div className="flex items-center">
@@ -146,7 +203,7 @@ export default function Todo() {
               <div className="ml-auto flex items-center gap-2">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="sm" className="h-8 gap-1">
+                    <Button  variant="outline" size="sm" className="h-8 gap-1">
                       <ListFilter className="h-3.5 w-3.5" />
                       <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                         Filter
@@ -156,10 +213,10 @@ export default function Todo() {
                   <DropdownMenuContent align="end">
                     <DropdownMenuLabel>Filter by</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuCheckboxItem checked>
+                    <DropdownMenuCheckboxItem onClick = {searchAsc} checked={filterOrderAsc}>
                       Newest first
                     </DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem>Oldest first</DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem onClick = {searchDesc} checked={!filterOrderAsc}>Oldest first</DropdownMenuCheckboxItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
