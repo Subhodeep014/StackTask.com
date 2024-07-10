@@ -26,6 +26,7 @@ import { useSelector } from 'react-redux'
 import axios from 'axios'
 import { comment } from 'postcss'
 import DialogBox from './DialogBox'
+import { toast } from 'react-toastify'
 export default function TableRowTodo({task, setUserTodo, userTodo}) {
   const [user, setUser] = useState({});
   const {currentUser} = useSelector(state=> state.user)
@@ -75,8 +76,17 @@ export default function TableRowTodo({task, setUserTodo, userTodo}) {
     return formattedDate;
   };
 
-  const handleDelete = async()=>{
-    
+  const handleDelete = async() => {
+    try {
+      const res = await axios.delete(`/api/todo/delete/${task._id}/${currentUser._id}`);
+      if (res.status === 200) {
+        toast.success("Task deleted successfully");
+        setUserTodo(userTodo.filter(todo => todo._id !== task._id));
+      }
+    } catch (error) {
+      toast.error("Error in deleting task");
+      console.log(error);
+    }
   }
   return (
     <>
