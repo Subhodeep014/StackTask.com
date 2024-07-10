@@ -140,7 +140,7 @@ export default function Todo() {
               <TabsList>
                 <TabsTrigger value="all">All</TabsTrigger>
                 <TabsTrigger value="active">Active</TabsTrigger>
-                <TabsTrigger value="draft">Completed</TabsTrigger>
+                <TabsTrigger value="completed">Completed</TabsTrigger>
               </TabsList>
               <div className="ml-auto flex items-center gap-2">
                 <DropdownMenu>
@@ -185,6 +185,76 @@ export default function Todo() {
                     </TableHeader>
                     <TableBody>
                         {userTodo.length>0  && userTodo.map(todo=>(
+                            <TableRowTodo key={todo._id} task={todo} setUserTodo = {setUserTodo} userTodo = {userTodo}/>
+                        ))}                        
+                    </TableBody>
+                  </Table>
+                </CardContent>
+                <CardFooter>
+                  <div className="text-xs text-muted-foreground">
+                    Showing <strong>1-10</strong> of <strong>32</strong>{" "}
+                    products
+                  </div>
+                </CardFooter>
+              </Card>
+            </TabsContent>
+            <TabsContent value="active">
+              <Card x-chunk="dashboard-06-chunk-0">
+                <CardHeader>
+                  <CardTitle>Tasks</CardTitle>
+                  <CardDescription>
+                    Manage your tasks and view their status.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Table>
+                    <TableHeader className="bg-slate-200 dark:bg-sky-950">
+                      <TableRow className = "p-0 m-0" >
+                        <TableHead className="p-3 m-0">Task</TableHead>
+                        <TableHead className="p-0 m-0">Name</TableHead>
+                        <TableHead className="p-0 m-0">Created At</TableHead>
+                        <TableHead className="p-0 m-0">
+                          <span className="sr-only">Actions</span>
+                        </TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {userTodo.length>0  && userTodo.map(todo=> todo.completed===false &&(
+                            <TableRowTodo key={todo._id} task={todo} setUserTodo = {setUserTodo} userTodo = {userTodo}/>
+                        ))}                        
+                    </TableBody>
+                  </Table>
+                </CardContent>
+                <CardFooter>
+                  <div className="text-xs text-muted-foreground">
+                    Showing <strong>1-10</strong> of <strong>32</strong>{" "}
+                    products
+                  </div>
+                </CardFooter>
+              </Card>
+            </TabsContent>
+            <TabsContent value="completed">
+              <Card x-chunk="dashboard-06-chunk-0">
+                <CardHeader>
+                  <CardTitle>Tasks</CardTitle>
+                  <CardDescription>
+                    Manage your tasks and view their status.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Table>
+                    <TableHeader className="bg-slate-200 dark:bg-sky-950">
+                      <TableRow className = "p-0 m-0" >
+                        <TableHead className="p-3 m-0">Task</TableHead>
+                        <TableHead className="p-0 m-0">Name</TableHead>
+                        <TableHead className="p-0 m-0">Created At</TableHead>
+                        <TableHead className="p-0 m-0">
+                          <span className="sr-only">Actions</span>
+                        </TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {userTodo.length>0  && userTodo.map(todo=> todo.completed &&(
                             <TableRowTodo key={todo._id} task={todo} setUserTodo = {setUserTodo} userTodo = {userTodo}/>
                         ))}                        
                     </TableBody>
