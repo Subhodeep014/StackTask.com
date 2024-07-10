@@ -78,12 +78,13 @@ export default function Todo() {
         const startIndex = userTodo.length;
         try {
             const res = await axios.get(`/api/todo/get?startIndex=${startIndex}`);
-            const data = await res.json();
-            if(res.ok){
-                setUserPosts((prev)=>[...prev, ...data.posts]);
-                if(data.posts.length<9){
-                    setShowMore(false);
-                }
+            const data = await res.data;
+            if(res.status === 200){
+              const newDataArray = Object.keys(data).map(key => data[key]);
+              setUserTodo(prevUserTodo => [...prevUserTodo, ...newDataArray]);
+              if(newDataArray.length<9){
+                  setShowMore(false);
+              }
             }
         } catch (error) {
             console.log(error);
@@ -190,12 +191,6 @@ export default function Todo() {
                     </TableBody>
                   </Table>
                 </CardContent>
-                <CardFooter>
-                  <div className="text-xs text-muted-foreground">
-                    Showing <strong>1-10</strong> of <strong>32</strong>{" "}
-                    products
-                  </div>
-                </CardFooter>
               </Card>
             </TabsContent>
             <TabsContent value="active">
@@ -225,12 +220,6 @@ export default function Todo() {
                     </TableBody>
                   </Table>
                 </CardContent>
-                <CardFooter>
-                  <div className="text-xs text-muted-foreground">
-                    Showing <strong>1-10</strong> of <strong>32</strong>{" "}
-                    products
-                  </div>
-                </CardFooter>
               </Card>
             </TabsContent>
             <TabsContent value="completed">
@@ -260,15 +249,16 @@ export default function Todo() {
                     </TableBody>
                   </Table>
                 </CardContent>
-                <CardFooter>
-                  <div className="text-xs text-muted-foreground">
-                    Showing <strong>1-10</strong> of <strong>32</strong>{" "}
-                    products
-                  </div>
-                </CardFooter>
               </Card>
             </TabsContent>
           </Tabs>
+          {showMore && (
+          <div className="flex justify-center mt-4">
+            <Button onClick={handleShowMore}>
+              Show More
+            </Button>
+          </div>
+        )}
         </main>
     </div>
   )
