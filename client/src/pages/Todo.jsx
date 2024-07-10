@@ -129,6 +129,7 @@ export default function Todo() {
             <div className="mt-5">
                 <Search className="relative top-7 left-2 h-4 w-4 text-muted-foreground" />
                 <Input
+                id="search"
                 type="search"
                 placeholder="Search..."
                 className="w-[200px] rounded-lg bg-background pl-8"
@@ -184,7 +185,7 @@ export default function Todo() {
                     </TableHeader>
                     <TableBody>
                         {userTodo.length>0  && userTodo.map(todo=>(
-                            <TableRowTodo key={todo._id} task={todo}/>
+                            <TableRowTodo key={todo._id} task={todo} setUserTodo = {setUserTodo} userTodo = {userTodo}/>
                         ))}                        
                     </TableBody>
                   </Table>
