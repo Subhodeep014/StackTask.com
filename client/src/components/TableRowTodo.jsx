@@ -49,11 +49,26 @@ export default function TableRowTodo({task, setUserTodo, userTodo}) {
   
   const handleEdit = ()=>{
     setIsEditing(true);
-    setEditedContent(task.name)
+    setEditedContent(task?.name)
   }
-  const [isChecked, setIsChecked] = useState(false);
-  const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
+  const [isChecked, setIsChecked] = useState(task?.completed || false);
+  const handleCheckboxChange = async () => {
+    const newCheckedState = !isChecked;
+    setIsChecked(newCheckedState);
+    try {
+      const res = await axios.put(`/api/todo/update/${task._id}/${currentUser._id}`, {
+        completed: newCheckedState
+      });
+      if (res.status === 200) {
+        const updatedTodos = userTodo.map(todo =>
+          todo._id === task._id ? { ...todo, completed: newCheckedState } : todo
+        );
+        setUserTodo(updatedTodos);
+        console.log(userTodo)
+      }
+    } catch (error) {
+      toast.error("Error in updating task", error);
+    }
   };
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
@@ -92,9 +107,9 @@ export default function TableRowTodo({task, setUserTodo, userTodo}) {
     <>
       <TableRow className="p-0 m-0 bg-gray-100 dark:bg-slate-900">
         <TableCell className="sm:table-cell">
-          <Checkbox checked={isChecked} onClick={handleCheckboxChange} />
+          <Checkbox checked={task.completed} onClick={handleCheckboxChange} />
         </TableCell>
-        <TableCell className={`min-w-36 p-0 m-0 text-[12px] sm:text-[14px] ${isChecked ? 'line-through text-gray-500 dark:text-gray-400' : ''}`}>
+        <TableCell className={`min-w-36 p-0 m-0 text-[12px] sm:text-[14px] ${task?.completed ? 'line-through text-gray-500 dark:text-gray-400' : ''}`}>
           {task.name}
         </TableCell>
         <TableCell className="p-0 m-0 text-[11px] lg:text-[14px]">
