@@ -30,23 +30,25 @@ export default function Signup() {
     }
     try {
       setLoading(true);
+      
       setErrorMessage(null);
       const res = await axios.post('/api/auth/signup',formData,{
         headers: {'Content-Type': 'application/json'}
       })
       const data= await res.data;
-      console.log(data)
-      if(data.success===false){
-        toast.error(data.message);
-        setErrorMessage(data.message);
-      }
-      else{
+      console.log(res)
+      if(res.status===200){
         toast.success("Succesfully signed up");
         navigate('/sign-in');
+
+      }
+      else{
+        toast.error("User exist. PLease sign in");
+        setErrorMessage(res.message);
       }
       setLoading(false);
     } catch (error) {
-      toast.error(error.messgage);
+      toast.error("User exists. Please sign in");
       setLoading(false);
     }
   }

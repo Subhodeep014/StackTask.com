@@ -63,7 +63,7 @@ export default function Todo() {
                 if(data){
                     setUserTodo(data)
                     console.log(userTodo)
-                    if(res.data.length<9){
+                    if(data.length<9){
                         setShowMore(false)
                     }
                 }
@@ -84,9 +84,6 @@ export default function Todo() {
             if(res.status === 200){
               const newDataArray = Object.keys(data).map(key => data[key]);
               setUserTodo(prevUserTodo => [...prevUserTodo, ...newDataArray]);
-              if(newDataArray.length<9){
-                  setShowMore(false);
-              }
             }
         } catch (error) {
             console.log(error);
@@ -99,17 +96,22 @@ export default function Todo() {
     const handleClick = async()=>{
         if (todoRef.current) todoRef.current.value = '';
         todoRef.current.focus()
-        console.log("hejkgd")
+
         try {
             const res = await axios.post('/api/todo/create', addTodo ,{
                 headers: { 'Content-Type': 'application/json' }
             })
             const data = await res.data;
             console.log(data)
+            
             if(res.status === 200){
                 toast.success("Task added into you list!")
                 setUserTodo([...userTodo, data])
+                if(userTodo.length>=9){
+                  setShowMore(true);
+                }
             }
+
         } catch (error) {
             toast.error("Something went wrong")
         }
