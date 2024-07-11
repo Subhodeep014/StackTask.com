@@ -83,6 +83,11 @@ export default function Todo() {
             const data = await res.data;
             if(res.status === 200){
               const newDataArray = Object.keys(data).map(key => data[key]);
+              if(newDataArray.length<9){
+                setShowMore(false)
+              }else{
+                setShowMore(true);
+              }
               setUserTodo(prevUserTodo => [...prevUserTodo, ...newDataArray]);
             }
         } catch (error) {
@@ -90,8 +95,9 @@ export default function Todo() {
         } 
     }
     const fetchTodos = async()=>{
+      let startIndex = 0;
       try {
-        const res = await axios.get(`/api/todo/get/`,{
+        const res = await axios.get(`/api/todo/get?startIndex=${startIndex}`,{
             headers: { 'Content-Type': 'application/json' }
         })
         console.log(res)
@@ -99,9 +105,10 @@ export default function Todo() {
         
         if(data){
             setUserTodo(data)
+            startIndex=userTodo.length
             console.log(userTodo)
-            if(data.length<9){
-                setShowMore(false)
+            if(data.length>=9){
+                setShowMore(true)
             }
         }
         
@@ -154,40 +161,18 @@ export default function Todo() {
     } 
     }
   }
-  const searchDesc = async()=>{
-    try {
-      setFilterOrderAsc(false);
-      const res = await axios.get(`/api/todo/get?order=asc`);
-      const data = await res.data;
-      console.log(data)
-      if(res.status === 200){
-        // const newDataArray = Object.keys(data).map(key => data[key]);
-        setUserTodo(data);
-        if(data.length<9){
-            setShowMore(false);
-        }
-      }
-  } catch (error) {
-      console.log(error);
-  } 
-  }
-  const searchAsc = async()=>{
-    try {
-      setFilterOrderAsc(true);
-      const res = await axios.get(`/api/todo/get?order=desc`);
-      const data = await res.data;
-      console.log(data)
-      if(res.status === 200){
-        // const newDataArray = Object.keys(data).map(key => data[key]);
-        setUserTodo(data);
-        if(data.length<9){
-            setShowMore(false);
-        }
-      }
-  } catch (error) {
-      console.log(error);
-  } 
-  }
+  const searchAsc = () => {
+    setFilterOrderAsc(true);
+    const sortedTodos = [...userTodo].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+    setUserTodo(sortedTodos);
+  };
+
+  const searchDesc = () => {
+    setFilterOrderAsc(false);
+    const sortedTodos = [...userTodo].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    setUserTodo(sortedTodos);
+  };
+  
   return (
     <div>
         <main className="gap-4 p-4 ">
