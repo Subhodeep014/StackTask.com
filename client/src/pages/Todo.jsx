@@ -89,6 +89,26 @@ export default function Todo() {
             console.log(error);
         } 
     }
+    const fetchTodos = async()=>{
+      try {
+        const res = await axios.get(`/api/todo/get/`,{
+            headers: { 'Content-Type': 'application/json' }
+        })
+        console.log(res)
+        const data = await res.data;
+        
+        if(data){
+            setUserTodo(data)
+            console.log(userTodo)
+            if(data.length<9){
+                setShowMore(false)
+            }
+        }
+        
+    } catch (error) {
+        console.log(error.message)
+    }
+    }
     const handleChange = async(e)=>{
         setAddTodo({[e.target.id]: e.target.value})
 
@@ -198,9 +218,9 @@ export default function Todo() {
           <Tabs defaultValue="all">
             <div className="flex items-center">
               <TabsList>
-                <TabsTrigger value="all">All</TabsTrigger>
-                <TabsTrigger value="active">Active</TabsTrigger>
-                <TabsTrigger value="completed">Completed</TabsTrigger>
+                <TabsTrigger onClick = {fetchTodos} value="all">All</TabsTrigger>
+                <TabsTrigger onClick = {fetchTodos} value="active">Active</TabsTrigger>
+                <TabsTrigger onClick = {fetchTodos} value="completed">Completed</TabsTrigger>
               </TabsList>
               <div className="ml-auto flex items-center gap-2">
                 <DropdownMenu>
