@@ -73,7 +73,6 @@ export default function Todo() {
             }
         }
         fetchTodos();
-        
         console.log(userTodo)
         
     },[currentUser._id])
