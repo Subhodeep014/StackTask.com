@@ -221,10 +221,10 @@ export default function Todo() {
                   <DropdownMenuContent align="end">
                     <DropdownMenuLabel>Filter by</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuCheckboxItem onClick = {searchAsc} checked={filterOrderAsc}>
+                    <DropdownMenuCheckboxItem onClick = {searchDesc} checked={!filterOrderAsc}>
                       Newest first
                     </DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem onClick = {searchDesc} checked={!filterOrderAsc}>Oldest first</DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem onClick = {searchAsc} checked={filterOrderAsc}>Oldest first</DropdownMenuCheckboxItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
